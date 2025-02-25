@@ -3,9 +3,8 @@ package tests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static io.appium.java_client.AppiumBy.*;
@@ -13,27 +12,22 @@ import static io.qameta.allure.Allure.step;
 
 public class SearchTests extends TestBase{
     @Test
-    @DisplayName("Добавление статьи в 'Сохраненное' и проверка наличия в списке")
-    void saveArticleAndCheckSavedListTest() {
+    @DisplayName("Проверка возврата из поиска с помощью кнопки 'Назад'")
+    void backButtonFromSearchTest() {
         step("Открываем поиск", () -> {
             $(accessibilityId("Search Wikipedia")).click();
-            $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("BrowserStack");
         });
 
-        step("Открываем первую найденную статью", () ->
-                $$(id("org.wikipedia.alpha:id/page_list_item_title")).first().click()
-        );
-
-        step("Добавляем статью в 'Сохраненное'", () -> {
-            $(id("org.wikipedia.alpha:id/article_menu_bookmark")).click();
+        step("Вводим поисковой запрос", () -> {
+            $(id("org.wikipedia.alpha:id/search_src_text")).sendKeys("Appium");
         });
 
-        step("Открываем список сохраненных статей", () -> {
-            $(accessibilityId("Saved")).click();
+        step("Нажимаем кнопку 'Назад'", () -> {
+            $(id("org.wikipedia.alpha:id/search_close_btn")).click();
         });
 
-        step("Проверяем, что статья есть в списке", () -> {
-            $$(id("org.wikipedia.alpha:id/item_title")).shouldHave(sizeGreaterThan(0));
+        step("Проверяем, что поиск закрылся", () -> {
+            $(id("org.wikipedia.alpha:id/search_src_text")).shouldNotBe(visible);
         });
     }
     @Test

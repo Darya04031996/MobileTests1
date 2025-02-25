@@ -3,7 +3,7 @@ package tests;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.CollectionCondition.size;
+
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
@@ -45,8 +45,8 @@ public class SearchTests extends TestBase{
         });
 
         step("Проверяем, что нет найденных статей", () ->
-                $$(id("org.wikipedia.alpha:id/page_list_item_title")).shouldHave(size(0))
-        );
+                $(id("org.wikipedia.alpha:id/page_list_item_description")).shouldHave(text("No results")));
+
     }
     @Test
     @DisplayName("Открытие первой найденной статьи и проверка заголовка")
